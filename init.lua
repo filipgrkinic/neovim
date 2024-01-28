@@ -270,6 +270,9 @@ vim.o.clipboard = 'unnamedplus'
 -- Enable break indent
 vim.o.breakindent = true
 
+-- Enable linebreak
+vim.o.linebreak = true
+
 -- Save undo history
 vim.o.undofile = true
 
