@@ -18,6 +18,7 @@ if not vim.loop.fs_stat(lazypath) then
     lazypath,
   }
 end
+
 vim.opt.rtp:prepend(lazypath)
 vim.opt.swapfile = false
 vim.opt.numberwidth = 3
@@ -172,20 +173,29 @@ require('lazy').setup({
     config = function()
       -- Optionally configure kanagawa
       require('kanagawa').setup({
-        undercurl = true, -- enable undercurls
-        commentStyle = { italic = true },
-        functionStyle = {},
         keywordStyle = { italic = false },
-        statementStyle = { bold = true },
-        typeStyle = {},
-        transparent = false,   -- do not set background color
-        dimInactive = false,   -- dim inactive window `:h hl-NormalNC`
-        terminalColors = true, -- define vim.g.terminal_color_{0,17}
-        colors = {},
-        overrides = function(colors)
-          return {}
-        end,
         theme = "wave", -- Load "wave" theme
+        colors = {
+          theme = {
+            all = {
+              ui = {
+                bg_gutter = "none"
+              }
+            }
+          }
+        },
+        overrides = function(colors)
+          return {
+            -- Change the color of line numbers
+            LineNr = { fg = '#313236' },
+
+            -- Change the color of the currently active line number
+            CursorLineNr = { fg = '#C8C092' },
+
+            -- Change the color of indent lines
+            IndentBlanklineChar = { fg = '#FFFFFF' },
+          }
+        end,
       })
 
       -- Apply the theme
@@ -213,7 +223,9 @@ require('lazy').setup({
     -- Enable `lukas-reineke/indent-blankline.nvim`
     -- See `:help ibl`
     main = 'ibl',
-    opts = {},
+    opts = {
+      indent = { char = "│" },
+    },
   },
 
   -- "gc" to comment visual regions/lines
@@ -271,14 +283,14 @@ require('lazy').setup({
 -- Set highlight on search
 vim.o.hlsearch = false
 
--- Make line numbers default
-vim.wo.number = true
-
 -- Enable relative line numbers
 vim.wo.relativenumber = true
 
 -- Enable mouse mode
 vim.o.mouse = 'a'
+
+-- Hide line numbers
+vim.wo.number = true
 
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
@@ -356,7 +368,8 @@ require('telescope').setup {
     file_ignore_patterns = {
       "node_modules",
       "tmc",
-      "test"
+      "test",
+      "pycache"
     }
   },
   pickers = {
